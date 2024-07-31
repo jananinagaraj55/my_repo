@@ -1,0 +1,104 @@
+1.create table customer(
+fname varchar(20),
+lname varchar(20),
+custid integer primary key,
+emailid varchar(20),
+pwd varchar(20),
+address varchar(20),
+street varchar(20),
+pincode integer,
+gender varchar(20),
+phoneno integer,
+allergy varchar(20));
+drop table customer;
+
+2.create table cuisine(
+cuisineid integer primary key,
+cuisinename varchar(20));
+
+3.create table employee(
+empid integer primary key,
+fname varchar(20),
+lname varchar(20),
+dob varchar(20),
+emailid varchar(20),
+pwd varchar(20),
+address varchar(20),
+phoneno integer,
+gender varchar(20),
+salary int);
+
+4. CREATE TABLE chef (
+    chefid INTEGER PRIMARY KEY,
+    chefname VARCHAR(20),
+    address VARCHAR(50),
+    street VARCHAR(50),
+    phoneno VARCHAR(20),
+    spec INTEGER,
+    empid INTEGER,
+    emailid VARCHAR(50),
+    pwd VARCHAR(50),
+    salary INT,
+    FOREIGN KEY (spec) REFERENCES cuisine(cuisineid) ON DELETE CASCADE,
+    FOREIGN KEY (empid) REFERENCES employee(empid) ON DELETE CASCADE);
+	drop table chef;
+
+
+5. create table ingredient(
+ingid integer primary key,
+ingname varchar(20));
+
+6. CREATE TABLE food (
+    foodid INTEGER PRIMARY KEY,
+    foodname VARCHAR(20),
+    price INTEGER,
+    quantity INTEGER,
+    foodavail VARCHAR(20),
+    cuisineid INTEGER,
+    ingid INTEGER,
+    chefid INTEGER,
+    FOREIGN KEY (cuisineid) REFERENCES cuisine(cuisineid) ON DELETE CASCADE,
+    FOREIGN KEY (ingid) REFERENCES ingredient(ingid) ON DELETE CASCADE,
+    FOREIGN KEY (chefid) REFERENCES chef(chefid) ON DELETE NO ACTION);
+
+
+7. create table drink(
+drinkid integer primary key,
+drinkname varchar(20),
+price int,
+quantity varchar(20),
+drinkavail varchar(20));
+
+8. CREATE TABLE delivery (
+    delid INTEGER PRIMARY KEY,
+    delname VARCHAR(20),
+    vehicleno VARCHAR(20),
+    custid INTEGER,
+    empid INTEGER,
+    delcharge INTEGER,
+    deldate DATE,
+    deltime VARCHAR(20),
+    FOREIGN KEY (custid) REFERENCES customer(custid) ON DELETE CASCADE,
+    FOREIGN KEY (empid) REFERENCES employee(empid) ON DELETE CASCADE);
+
+	
+9.CREATE TABLE order1 (
+    ordid INTEGER PRIMARY KEY,
+    totalcost INTEGER,
+    foodid INTEGER,
+    drinkid INTEGER,
+    delid INTEGER,
+    FOREIGN KEY (foodid) REFERENCES food(foodid) ON DELETE CASCADE,
+    FOREIGN KEY (drinkid) REFERENCES drink(drinkid) ON DELETE CASCADE,
+    FOREIGN KEY (delid) REFERENCES delivery(delid) ON DELETE CASCADE
+);
+
+
+CREATE TABLE payment (
+    payid INTEGER PRIMARY KEY,
+    paymethod VARCHAR(20),
+    custid INTEGER,
+    ordid INTEGER,
+    FOREIGN KEY (custid) REFERENCES customer(custid) ON DELETE CASCADE,
+    FOREIGN KEY (ordid) REFERENCES order1(ordid) ON DELETE NO ACTION
+);
